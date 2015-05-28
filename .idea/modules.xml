@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DataAlert.iml" filepath="$PROJECT_DIR$/DataAlert.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidDataRestricter.iml" filepath="$PROJECT_DIR$/AndroidDataRestricter.iml" />
     </modules>
   </component>
 </project>
