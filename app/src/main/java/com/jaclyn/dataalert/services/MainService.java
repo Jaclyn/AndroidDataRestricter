@@ -1,21 +1,13 @@
-package com.jaclyn.dataalert;
+package com.jaclyn.dataalert.services;
 
-import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
 
-import java.lang.Override;
 import java.lang.reflect.Method;
 import java.util.Random;
 
@@ -32,14 +24,14 @@ public class MainService extends Service {
     private Method setMobileDataDisabledMethod;
     private boolean serviceRun = false;
 
-    public MainService(){
-       super();
+    public MainService() {
+        super();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         serviceRun = true;
-        return super.onStartCommand(intent,flags,startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 
 
@@ -60,7 +52,9 @@ public class MainService extends Service {
         return super.onUnbind(intent);
     }
 
-    /** method for clients */
+    /**
+     * method for clients
+     */
     public int getRandomNumber() {
         return mGenerator.nextInt(100);
     }
@@ -70,13 +64,13 @@ public class MainService extends Service {
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
     public class MainBinder extends Binder {
-        MainService getService() {
+        public MainService getService() {
             // Return this instance of LocalService so clients can call public methods
             return MainService.this;
         }
     }
 
-    public boolean run(){
+    public boolean run() {
         long interval = System.currentTimeMillis();
 
 //        Thread thread = new Runnable(){
@@ -85,18 +79,18 @@ public class MainService extends Service {
         while (true && serviceRun) {
             synchronized (this) {
                 try {
-                    if(System.currentTimeMillis() == interval) {
+                    if (System.currentTimeMillis() == interval) {
                         connectManager = (ConnectivityManager) getApplicationContext()
                                 .getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo mobile = connectManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                        if(mobile.isConnected()){
+                        if (mobile.isConnected()) {
                             setMobileDataDisabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
                             setMobileDataDisabledMethod.setAccessible(true);
                             setMobileDataDisabledMethod.invoke(connectManager, false);
                         }
                     }
                     //check every 30 seconds
-                    interval = System.currentTimeMillis() + 30*1000;
+                    interval = System.currentTimeMillis() + 30 * 1000;
 
                 } catch (Exception e) {
                 }

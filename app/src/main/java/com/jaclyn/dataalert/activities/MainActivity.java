@@ -1,4 +1,4 @@
-package com.jaclyn.dataalert;
+package com.jaclyn.dataalert.activities;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -9,35 +9,61 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jaclyn.dataalert.MainService.MainBinder;
+import com.jaclyn.dataalert.R;
+import com.jaclyn.dataalert.services.MainService;
+import com.jaclyn.dataalert.services.MainService.MainBinder;
 
 
 public class MainActivity extends Activity {
 
-    private Button button;
+    private static MainActivity instance;
+
     private MainService mService;
+
+    private Button button;
+    private TextView txtCounter;
+
     boolean mBound = false;
+
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
+    private Context getContext() {
+        return this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        instance = this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
         button = (Button) findViewById(R.id.btn_on);
+        txtCounter = (TextView) findViewById(R.id.txt_counter);
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(! mService.run()){
+                if (!mService.run()) {
                     Toast.makeText(getContext(), "Data Restricter Is Off.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private Context getContext(){
-        return this;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        instance = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        instance = null;
     }
 
     @Override
@@ -47,7 +73,13 @@ public class MainActivity extends Activity {
         super.onStart();
     }
 
-    /** Defines callbacks for service binding, passed to bindService() */
+    public void setTxtCounter(int input){
+        txtCounter.setText(input);
+    }
+
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -64,5 +96,4 @@ public class MainActivity extends Activity {
             mBound = false;
         }
     };
-
 }

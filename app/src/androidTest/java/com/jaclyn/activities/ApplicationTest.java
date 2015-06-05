@@ -1,4 +1,4 @@
-package com.jaclyn.dataalert;
+package com.jaclyn.activities;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

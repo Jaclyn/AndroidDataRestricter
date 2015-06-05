@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Data Restricter</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="foo_bar">Foo Bar</string>
     <string name="on">On</string>btn_on
     <string name="btn_on">btn_on</string>
 </resources>
