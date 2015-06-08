@@ -2,7 +2,6 @@ package com.jaclyn.dataalert.activities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +11,6 @@ import android.widget.Toast;
 
 import com.jaclyn.dataalert.R;
 import com.jaclyn.dataalert.utilities.Common;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class MainActivity extends Activity {
 
@@ -34,16 +30,20 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        instance = this;
         super.onCreate(savedInstanceState);
+
+        instance = this;
+        count = 0;
+
         setContentView(R.layout.activity_main);
+
         button = (Button) findViewById(R.id.btn_on);
         txtCounter = (TextView) findViewById(R.id.txt_counter);
-        count = 0;
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 boolean isMobileConnected = Common.isMobileData(getContext());
-                if (setMobileDataEnabled(!isMobileConnected)) {
+                if (Common.setMobileDataEnabled(getContext(), !isMobileConnected)) {
                     Toast.makeText(getContext(), "Turn " + (isMobileConnected ? "off" : "on") + " Mobile Data", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Fail to switch Mobile Data", Toast.LENGTH_SHORT).show();
@@ -68,24 +68,5 @@ public class MainActivity extends Activity {
         count++;
         Log.d("asd", String.valueOf(count));
         txtCounter.setText(String.valueOf(count));
-    }
-
-    private boolean setMobileDataEnabled(boolean enabled) {
-        try {
-            ConnectivityManager connectManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            Method setMobileDataDisabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-            setMobileDataDisabledMethod.setAccessible(true);
-            setMobileDataDisabledMethod.invoke(connectManager, enabled);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            return false;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 }
