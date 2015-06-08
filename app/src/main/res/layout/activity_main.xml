@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:layout_width="@dimen/abc_action_button_min_width_material"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_button_min_height_material"
         android:text="@string/on"
         android:id="@+id/btn_on"/>
@@ -15,6 +15,6 @@
         android:text="@string/foo_bar"
         android:id="@+id/txt_counter"
         android:layout_gravity="center_horizontal"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
 </LinearLayout>
